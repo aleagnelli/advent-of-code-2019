@@ -19,6 +19,7 @@ class Day1Spec : StringSpec({
         answer shouldBe 3_305_041
         val answer2 = modules.map { Day1.getTotalFuel(it) }.sum()
         answer2 shouldBe 4_954_710
+        println("day1")
         println("answer1: $answer")
         println("answer2: $answer2")
     }
