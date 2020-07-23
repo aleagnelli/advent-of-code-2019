@@ -33,7 +33,9 @@ class Day3Spec : StringSpec({
             .split("\n")
 
         val answer = Day3.distance(directions)
+        answer shouldBe 2427
         val answer2 = Day3.bestIntersection(directions)
+        answer2 shouldBe 27890
         println("day3")
         println("answer1: $answer")
         println("answer2: $answer2")
