@@ -11,17 +11,12 @@ class Day1Spec : StringSpec({
     }
 
     "answer" {
-        val modules = Day1::class.java.getResource("day1.txt")
-            .readText()
-            .split("\n")
-            .map { it.toInt() }
+        val modules = Resources.read(1, "\n").map { it.toInt() }
         val answer = modules.map { Day1.getFuel(it) }.sum()
         answer shouldBe 3_305_041
         val answer2 = modules.map { Day1.getTotalFuel(it) }.sum()
         answer2 shouldBe 4_954_710
-        println("day1")
-        println("answer1: $answer")
-        println("answer2: $answer2")
+        AnswerPrinter.print(1, answer, answer2)
     }
 
     "getTotalFuel" {

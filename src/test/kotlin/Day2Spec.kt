@@ -13,17 +13,12 @@ class Day2Spec : StringSpec({
     }
 
     "answer" {
-        val ints = Day2::class.java.getResource("day2.txt")
-            .readText()
-            .split(",")
-            .map { it.toInt() }
+        val ints = Resources.read(2, ",").map { it.toInt() }
 
         val answer = Day2.part1(ints)[0]
         answer shouldBe 3_101_878
         val answer2 = Day2.part2(ints)
         answer2 shouldBe 8444
-        println("day2")
-        println("answer1: $answer")
-        println("answer2: $answer2")
+        AnswerPrinter.print(2, answer, answer2)
     }
 })

@@ -28,16 +28,12 @@ class Day3Spec : StringSpec({
     }
 
     "answer" {
-        val directions = Day3::class.java.getResource("day3.txt")
-            .readText()
-            .split("\n")
+        val directions = Resources.read(3, "\n")
 
         val answer = Day3.distance(directions)
         answer shouldBe 2427
         val answer2 = Day3.bestIntersection(directions)
         answer2 shouldBe 27890
-        println("day3")
-        println("answer1: $answer")
-        println("answer2: $answer2")
+        AnswerPrinter.print(3, answer, answer2)
     }
 })
