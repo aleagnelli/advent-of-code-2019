@@ -5,12 +5,12 @@ import kotlinx.coroutines.runBlocking
 
 object Day7 {
     fun part1(program: List<Int>): Int {
-        return allPhases(0, 4).map { AmplifiersSeries(program).start(it) }.max()!!
+        return allPhases(0, 4).map { AmplifiersSeries(program).start(it) }.maxOrNull()!!
     }
 
     fun part2(program: List<Int>): Int {
         println(allPhases(5, 9).map { AmplifiersSeries(program).startWithLoop(it) })
-        return allPhases(5, 9).map { AmplifiersSeries(program).startWithLoop(it) }.max()!!
+        return allPhases(5, 9).map { AmplifiersSeries(program).startWithLoop(it) }.maxOrNull()!!
     }
 
     private fun allPhases(from: Int, to: Int): List<List<Int>> {
@@ -55,7 +55,7 @@ class AmplifiersSeries(private val program: List<Int>) {
             }
         }
 
-        powers.max()!!
+        powers.maxOrNull()!!
 
     }
 

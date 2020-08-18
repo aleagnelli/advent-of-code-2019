@@ -7,7 +7,7 @@ object Day8 {
     fun part1(input: List<Int>): Int {
         return toLayers(input)
             .map { l -> Pair(l, l.count { it == 0 }) }
-            .minBy { it.second }!!
+            .minByOrNull { it.second }!!
             .let { (l, _) ->
                 val counter = l.groupingBy { it }.eachCount()
                 counter.getOrDefault(1, 0) * counter.getOrDefault(2, 0)

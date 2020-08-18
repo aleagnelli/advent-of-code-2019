@@ -5,14 +5,14 @@ object Day3 {
         val points0 = getWirePoints(input[0])
         val points1 = getWirePoints(input[1])
         val intersect = points0.intersect(points1)
-        return getDistances(intersect).min()!!
+        return getDistances(intersect).minOrNull()!!
     }
 
     fun bestIntersection(input: List<String>): Int {
         val points0 = getWirePoints(input[0])
         val points1 = getWirePoints(input[1])
         val intersect = points0.intersect(points1)
-        return intersect.map { points0.indexOf(it) + points1.indexOf(it) + 2 }.min()!!
+        return intersect.map { points0.indexOf(it) + points1.indexOf(it) + 2 }.minOrNull()!!
     }
 
     private fun getWirePoints(directions: String): List<Point> {
