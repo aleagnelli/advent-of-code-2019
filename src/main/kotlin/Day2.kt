@@ -1,3 +1,6 @@
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.toList
+import kotlinx.coroutines.runBlocking
 import kotlin.math.pow
 
 object Day2 {
@@ -27,32 +30,41 @@ object Day2 {
     }
 
     fun intcode(input: List<Int>): List<Int> {
-        return Intcode.newProgram(input).compute().memory
+        return runBlocking { Intcode.newProgram(input).compute().memory }
     }
 }
 
 class Intcode(
     val memory: List<Int>,
     private val currentAddress: Int,
-    private val input: List<Int>,
-    val output: List<Int>
+    val inputChannel: Channel<Int>,
+    val outputChannel: Channel<Int>
 ) {
     companion object {
         fun newProgram(memory: List<Int>, input: List<Int> = emptyList()): Intcode {
-            return Intcode(memory, 0, input, emptyList())
+            val inputChannel = Channel<Int>(Channel.UNLIMITED)
+            runBlocking {
+                input.forEach { inputChannel.send(it) }
+            }
+            return withInputChannel(memory, inputChannel)
+        }
+
+        fun withInputChannel(memory: List<Int>, inputChannel: Channel<Int>): Intcode {
+            return Intcode(memory, 0, inputChannel, Channel(Channel.UNLIMITED))
         }
     }
 
-    fun compute(): Intcode {
+    suspend fun compute(): Intcode {
         return if (this.memory[currentAddress] == 99) {
+            this.outputChannel.close()
             this
         } else {
             computeStep().compute()
         }
     }
 
-    private fun computeStep(): Intcode {
-        return when (memory[currentAddress] % 100) {
+    private suspend fun computeStep(): Intcode {
+        return when (val instruction = memory[currentAddress] % 100) {
             1 -> computeNextSum()
             2 -> computeNextMul()
             3 -> input()
@@ -61,7 +73,7 @@ class Intcode(
             6 -> jumpIfFalse()
             7 -> lessThan()
             8 -> equals()
-            else -> throw IllegalStateException("Instruction not valid!")
+            else -> throw IllegalStateException("Instruction $instruction not valid!")
         }
     }
 
@@ -77,19 +89,25 @@ class Intcode(
         val n1 = memory[getAddress(1)]
         val n2 = memory[getAddress(2)]
         val resPos = getAddress(3)
-        return Intcode(this.memory.toMutableList().apply { f(n1, n2, resPos) }, currentAddress + 4, input, output)
+        return Intcode(
+            this.memory.toMutableList().apply { f(n1, n2, resPos) },
+            currentAddress + 4,
+            inputChannel,
+            outputChannel
+        )
     }
 
-    private fun input(): Intcode {
-        val n1 = this.input[0]
+    private suspend fun input(): Intcode {
+        val n1 = this.inputChannel.receive()
         val pos = getAddress(1)
         val newMemory = this.memory.toMutableList().apply { this[pos] = n1 }
-        return Intcode(newMemory, currentAddress + 2, input.drop(1), output)
+        return Intcode(newMemory, currentAddress + 2, inputChannel, outputChannel)
     }
 
-    private fun output(): Intcode {
+    private suspend fun output(): Intcode {
         val pos = getAddress(1)
-        return Intcode(memory, currentAddress + 2, input, output + this.memory[pos])
+        outputChannel.send(this.memory[pos])
+        return Intcode(memory, currentAddress + 2, inputChannel, outputChannel)
     }
 
     private fun jumpIfTrue(): Intcode {
@@ -103,7 +121,7 @@ class Intcode(
     private fun jumpIf(c: (Int) -> Boolean): Intcode {
         val n1 = memory[getAddress(1)]
         val jump = if (c(n1)) memory[getAddress(2)] else currentAddress + 3
-        return Intcode(memory, jump, input, output)
+        return Intcode(memory, jump, inputChannel, outputChannel)
     }
 
     private fun lessThan(): Intcode {
@@ -124,6 +142,10 @@ class Intcode(
 
     private fun getMode(param: Int): Int {
         return (this.memory[currentAddress] / 10.0.pow(2 + param)).toInt() % 10
+    }
+
+    fun getOutput(): List<Int> = runBlocking {
+        outputChannel.toList()
     }
 }
 
