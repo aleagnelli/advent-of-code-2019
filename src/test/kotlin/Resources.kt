@@ -4,4 +4,9 @@ object Resources {
             .readText()
             .split(split)
     }
+
+    fun read(day: Int): String {
+        return Resources::class.java.getResource("day$day.txt").readText()
+    }
+
 }
