@@ -35,7 +35,7 @@ class Day7Spec : StringSpec({
     }
 
     "answer" {
-        val program = Resources.read(7, ",").map { it.toInt() }
+        val program = Resources.read(7, ",").map { it.toLong() }
 
         val answer = Day7.part1(program)
         answer shouldBe 206580
