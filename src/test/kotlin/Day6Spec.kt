@@ -21,6 +21,6 @@ class Day6Spec : StringSpec({
         val answer2 = day6.getOrbitalTransfers()
         answer2 shouldBe 451
 
-        AnswerPrinter.print(6, answer, answer2)
+        AnswerPrinter.print(this, answer, answer2)
     }
 })

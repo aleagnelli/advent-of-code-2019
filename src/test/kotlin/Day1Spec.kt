@@ -16,7 +16,7 @@ class Day1Spec : StringSpec({
         answer shouldBe 3_305_041
         val answer2 = modules.map { Day1.getTotalFuel(it) }.sum()
         answer2 shouldBe 4_954_710
-        AnswerPrinter.print(1, answer, answer2)
+        AnswerPrinter.print(this, answer, answer2)
     }
 
     "getTotalFuel" {

@@ -21,6 +21,6 @@ class Day4Spec : StringSpec({
         answer shouldBe 979
         val answer2 = Day4.differentPassword2(256310, 732736)
         answer2 shouldBe 635
-        AnswerPrinter.print(4, answer, answer2)
+        AnswerPrinter.print(this, answer, answer2)
     }
 })

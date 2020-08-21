@@ -34,6 +34,6 @@ class Day3Spec : StringSpec({
         answer shouldBe 2427
         val answer2 = Day3.bestIntersection(directions)
         answer2 shouldBe 27890
-        AnswerPrinter.print(3, answer, answer2)
+        AnswerPrinter.print(this, answer, answer2)
     }
 })

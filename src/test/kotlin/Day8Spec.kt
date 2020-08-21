@@ -17,6 +17,6 @@ class Day8Spec : StringSpec({
                            |#  # #  # # #  #  # #  # 
                            | ##   ##  #  #  ##  ###  """.trimMargin()
 
-        AnswerPrinter.print(8, answer, "\n" + answer2)
+        AnswerPrinter.print(this, answer, "\n" + answer2)
     }
 })

@@ -55,6 +55,6 @@ class Day5Spec : StringSpec({
         answer shouldBe listOf(0L, 0, 0, 0, 0, 0, 0, 0, 0, 15386262)
         val answer2 = Day5.part2Output(ints)
         answer2 shouldBe listOf(10376124L)
-        AnswerPrinter.print(5, answer, answer2)
+        AnswerPrinter.print(this, answer, answer2)
     }
 })

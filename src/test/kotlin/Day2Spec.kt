@@ -19,6 +19,6 @@ class Day2Spec : StringSpec({
         answer shouldBe 3_101_878L
         val answer2 = Day2.part2(ints)
         answer2 shouldBe 8444L
-        AnswerPrinter.print(2, answer, answer2)
+        AnswerPrinter.print(this, answer, answer2)
     }
 })
